@@ -2,3 +2,4 @@ argparse
 bz2file
 mwparserfromhell
 tokenizers
+mock

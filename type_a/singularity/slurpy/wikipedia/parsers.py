@@ -1,10 +1,12 @@
 import argparse
 import bz2
 from xml.etree.ElementTree import iterparse
+import re
 import mwparserfromhell
 from tokenizers import Tokenizer, trainers, models, pre_tokenizers, decoders
 from typing import Iterator
 
+file_pattern = re.compile(r'\[\[File:([^\]]+)\]\]')
 
 def wikitext_to_plain_text(wikitext):
     parsed = mwparserfromhell.parse(wikitext)
@@ -37,12 +39,24 @@ class WikipediaArticleIterator:
                 if elem.tag == '{http://www.mediawiki.org/xml/export-0.10/}text':
                     self.content = elem.text
                 elif elem.tag == '{http://www.mediawiki.org/xml/export-0.10/}page':
-                    self.plain_text_content = wikitext_to_plain_text(self.content)
+                    content = wikitext_to_plain_text(self.content)
+                    content = content.encode("utf-8", errors="ignore").decode("utf-8")
+                    
+                    # Remove file references from content
+                    content_without_refs = re.sub(file_pattern, '', content)
+
+                    self.plain_text_content = content_without_refs
                     article_data = {
                         'title': self.title,
-                        'content': self.plain_text_content,
+                        'content': re.split(r'(?<!\n)\n(?!\n)', content_without_refs),
                         'id': self.article_id
                     }
+
+
+                    file_refs = re.findall(file_pattern, content)
+                    if file_refs:
+                        article_data['file_refs'] = file_refs
+
                     # Reset the title, content, and article_id
                     self.title = None
                     self.content = None
