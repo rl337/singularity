@@ -13,5 +13,9 @@ PYTHON_PATH=.
 
 export PYTHON PYTHON_PATH
 
-seq 0 $((NUM_SHARDS - 1)) | xargs -I{} -P $PARALLEL_JOBS "$PYTHON" -m singularity.slurpy --shards=$NUM_SHARDS --shard-no={} --input-file=$INPUT_FILE
+seq 0 $((NUM_SHARDS - 1)) | xargs -I{} -P $PARALLEL_JOBS \
+    "$PYTHON" -m singularity.slurpy \
+        --shards=$NUM_SHARDS \
+        --shard-no={} \
+        --input-file=$INPUT_FILE
 
