@@ -7,6 +7,8 @@ from tokenizers import Tokenizer, trainers, models, pre_tokenizers, decoders
 from typing import Iterator
 
 file_pattern = re.compile(r'\[\[File:([^\]]+)\]\]')
+space_pattern = re.compile(r'[ ]{2,}')
+
 
 def wikitext_to_plain_text(wikitext):
     parsed = mwparserfromhell.parse(wikitext)
@@ -39,19 +41,18 @@ class WikipediaArticleIterator:
                 if elem.tag == '{http://www.mediawiki.org/xml/export-0.10/}text':
                     self.content = elem.text
                 elif elem.tag == '{http://www.mediawiki.org/xml/export-0.10/}page':
-                    content = wikitext_to_plain_text(self.content)
-                    content = content.encode("utf-8", errors="ignore").decode("utf-8")
-                    
+                    content = self.content.encode("utf-8", errors="ignore").decode("utf-8")
                     # Remove file references from content
                     content_without_refs = re.sub(file_pattern, '', content)
+                    content_without_refs = wikitext_to_plain_text(content_without_refs)
+                    content_without_refs = re.sub(space_pattern, ' ', content_without_refs)
 
                     self.plain_text_content = content_without_refs
                     article_data = {
                         'title': self.title,
-                        'content': re.split(r'(?<!\n)\n(?!\n)', content_without_refs),
+                        'content': re.split(r'(?<!\n)\n{2,}(?!\n)', content_without_refs),
                         'id': self.article_id
                     }
-
 
                     file_refs = re.findall(file_pattern, content)
                     if file_refs:

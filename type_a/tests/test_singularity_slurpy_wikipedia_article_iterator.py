@@ -17,6 +17,10 @@ class WikipediaArticleIteratorTests(unittest.TestCase):
             title_elem = ET.SubElement(page_elem, 'title')
             title_elem.text = entry['title']
 
+            if 'id' in entry:
+                id_elem = ET.SubElement(page_elem, 'id')
+                id_elem.text = entry['id']
+
             text_elem = ET.SubElement(page_elem, 'text')
             text_elem.text = entry['text']
 
@@ -52,6 +56,66 @@ class WikipediaArticleIteratorTests(unittest.TestCase):
                         'id': None
                     }
                 ]
+            },
+            {
+                'xml_entries': [
+                    {'title': 'Article 1', 'text': 'Paragraph 1.\n\nParagraph 2.\n\nParagraph 3.'},
+                    {'title': 'Article 2', 'text': 'First paragraph.\n\nSecond paragraph.\n\nThird paragraph.'}
+                ],
+                'expected_articles': [
+                    {
+                        'title': 'Article 1',
+                        'content': ['Paragraph 1.', 'Paragraph 2.', 'Paragraph 3.'],
+                        'file_refs': None,
+                        'id': None
+                    },
+                    {
+                        'title': 'Article 2',
+                        'content': ['First paragraph.', 'Second paragraph.', 'Third paragraph.'],
+                        'file_refs': None,
+                        'id': None
+                    }
+                ]
+            },
+            {
+                'xml_entries': [
+                    {'title': 'Article 1', 'text': 'Content 1 with a [[File:example1.jpg]] file.', 'id': '123'},
+                    {'title': 'Article 2', 'text': 'Content 2 with a [[File:example2.jpg]] file.', 'id': '456'}
+                ],
+                'expected_articles': [
+                    {
+                        'title': 'Article 1',
+                        'content': ['Content 1 with a file.'],
+                        'file_refs': ['example1.jpg'],
+                        'id': '123'
+                    },
+                    {
+                        'title': 'Article 2',
+                        'content': ['Content 2 with a file.'],
+                        'file_refs': ['example2.jpg'],
+                        'id': '456'
+                    }
+                ]
+            },
+            {
+                'xml_entries': [
+                    {'title': 'Article 3', 'text': 'Content 3 with two files: [[File:example3.jpg]] and [[File:example4.jpg]].', 'id': '789'},
+                    {'title': 'Article 4', 'text': 'Content 4 without any files.', 'id': '012'}
+                ],
+                'expected_articles': [
+                    {
+                        'title': 'Article 3',
+                        'content': ['Content 3 with two files: and .'],
+                        'file_refs': ['example3.jpg', 'example4.jpg'],
+                        'id': '789'
+                    },
+                    {
+                        'title': 'Article 4',
+                        'content': ['Content 4 without any files.'],
+                        'file_refs': None,
+                        'id': '012'
+                    }
+                ]
             }
             # Add more test cases as needed
         ]
@@ -64,8 +128,8 @@ class WikipediaArticleIteratorTests(unittest.TestCase):
                 article = next(iterator)
                 self.assertEqual(article['title'], expected_article['title'])
                 self.assertEqual(article['content'], expected_article['content'])
-                self.assertEqual(article.get('file_refs'), expected_article.get('file_refs'))
                 self.assertEqual(article['id'], expected_article['id'])
+                self.assertEqual(article.get('file_refs'), expected_article.get('file_refs'))
 
             with self.assertRaises(StopIteration):
                 next(iterator)
