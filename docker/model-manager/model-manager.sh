@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MODELS_STORAGE=/mnt/bfd/models
-MODELS_CONFIG=`dirname $0`
+MODELS_CONFIG=./`dirname $0`
 
 docker run \
     -v "$MODELS_CONFIG":/config \
