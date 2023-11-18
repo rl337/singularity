@@ -1,0 +1,20 @@
+{
+    "models": [
+        {
+            "name": "gpt2",
+            "source": "huggingface"
+        },
+        {
+            "name": "bert-base-uncased",
+            "source": "huggingface"
+        },
+        {
+            "name": "distilbert-base-uncased",
+            "source": "huggingface"
+        },
+        {
+            "name": "t5-small",
+            "source": "huggingface"
+        }
+    ]
+}

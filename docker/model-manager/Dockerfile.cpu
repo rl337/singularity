@@ -1,0 +1,14 @@
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim-buster
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install the transformers library
+RUN pip install transformers requests
+
+# Copy the Python script into the container at /app
+COPY app.py app.py
+
+# Define the entrypoint
+ENTRYPOINT ["python", "app.py"]
