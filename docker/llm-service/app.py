@@ -1,21 +1,33 @@
 import argparse
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
 from transformers import pipeline
 
+
+
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 
 def create_generator(model_path):
     # Load the model from the specified path
     return pipeline('text-generation', model=model_path)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
 @app.get("/generate/")
 def generate_text(prompt: str):
     result = generator(prompt, max_length=100)
     return {"generated_text": result[0]['generated_text']}
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 if __name__ == "__main__":
     # Parse command line arguments for model path
