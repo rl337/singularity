@@ -17,6 +17,7 @@ RUN pip3 install fastapi uvicorn
 # Copy your script and static files
 COPY app.py /app/app.py
 COPY static /app/static
+COPY drivers /app/drivers
 
 # Set work directory
 WORKDIR /app
