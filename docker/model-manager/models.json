@@ -15,6 +15,34 @@
         {
             "name": "t5-small",
             "source": "huggingface"
+        },
+        {
+            "name": "microsoft/DialoGPT-small",
+            "source": "huggingface"
+        },
+        {
+            "name": "microsoft/DialoGPT-medium",
+            "source": "huggingface"
+        },
+        {
+            "name": "microsoft/DialoGPT-large",
+            "source": "huggingface"
+        },
+        {
+            "name": "facebook/blenderbot-400M-distill",
+            "source": "huggingface"
+        },
+        {
+            "name": "facebook/blenderbot-1B-distill",
+            "source": "huggingface"
+        },
+        {
+            "name": "facebook/blenderbot-3B",
+            "source": "huggingface"
+        },
+        {
+            "name": "togethercomputer/LLaMA-2-7B-32K",
+            "source": "huggingface"
         }
     ]
 }
