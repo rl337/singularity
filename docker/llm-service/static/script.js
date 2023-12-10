@@ -34,6 +34,13 @@ function sendMessage() {
     document.getElementById("userInput").value = "";
 }
 
+function resetConversation() {
+    conversationHistory = []; // Clear the conversation history
+
+    // Clear the textarea content
+    document.getElementById("conversation").value = "";
+}
+
 window.onload = () => {
     document.getElementById("userInput").addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
