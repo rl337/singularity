@@ -20,7 +20,11 @@ function sendMessage() {
 
     updateConversation(userInput, true);
 
-    // Call the backend API with the full conversation history
+    // Disable buttons and show loading indicator
+    document.getElementById("sendButton").disabled = true;
+    document.getElementById("resetButton").disabled = true;
+    document.getElementById("conversation").classList.add("loading");
+
     const fullPrompt = conversationHistory.join("\n") + "\nBot: ";
     const baseUrl = window.location.origin;
     fetch(`${baseUrl}/generate/?prompt=${encodeURIComponent(fullPrompt)}`)
@@ -28,11 +32,18 @@ function sendMessage() {
         .then(data => {
             updateConversation(data.generated_text, false);
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error))
+        .finally(() => {
+            // Re-enable buttons and remove loading indicator
+            document.getElementById("sendButton").disabled = false;
+            document.getElementById("resetButton").disabled = false;
+            document.getElementById("conversation").classList.remove("loading");
+        });
 
     // Clear input field
     document.getElementById("userInput").value = "";
 }
+
 
 function resetConversation() {
     conversationHistory = []; // Clear the conversation history

@@ -1,0 +1,10 @@
+
+.loading {
+    cursor: wait; /* Changes the cursor to a 'waiting' symbol */
+    opacity: 0.5; /* Makes the textarea semi-transparent */
+}
+
+button:disabled {
+    opacity: 0.5; /* Makes disabled buttons semi-transparent */
+}
+
