@@ -27,7 +27,13 @@ function sendMessage() {
 
     const fullPrompt = conversationHistory.join("\n") + "\nBot: ";
     const baseUrl = window.location.origin;
-    fetch(`${baseUrl}/generate/?prompt=${encodeURIComponent(fullPrompt)}`)
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: fullPrompt, max_request_length: 100 }) // Adjust max_request_length as needed
+    };
+
+    fetch(`${baseUrl}/generate/`, requestOptions)  // Make sure the URL is correct
         .then(response => response.json())
         .then(data => {
             updateConversation(data.generated_text, false);
@@ -43,7 +49,6 @@ function sendMessage() {
     // Clear input field
     document.getElementById("userInput").value = "";
 }
-
 
 function resetConversation() {
     conversationHistory = []; // Clear the conversation history

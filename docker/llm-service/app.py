@@ -36,7 +36,7 @@ if __name__ == "__main__":
         allow_headers=["*"],  # Allows all headers
     )
 
-    app.add_api_route(path="/generate/", endpoint=model.generate_text, methods=["GET"])
+    app.add_api_route(path="/generate/", endpoint=model.generate_text, methods=["POST"])
     app.mount("/", StaticFiles(directory="static", html=True), name="static")
     
     # Start the FastAPI app
