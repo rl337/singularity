@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.3.0-devel-ubuntu22.04
+FROM nvidia/cuda:12.2.2-devel-ubuntu22.04
 
 # Set the working directory in the container
 WORKDIR /app

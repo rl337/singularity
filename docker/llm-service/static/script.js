@@ -1,7 +1,7 @@
 let conversationHistory = [];
 
 function updateConversation(msg, isUser) {
-    let formattedMsg = (isUser ? "User: " : "Bot: ") + msg;
+    let formattedMsg = (isUser ? "<human>: " : "<bot>: ") + msg;
     conversationHistory.push(formattedMsg);
 
     // Keep only the last N interactions, if necessary
@@ -25,7 +25,7 @@ function sendMessage() {
     document.getElementById("resetButton").disabled = true;
     document.getElementById("conversation").classList.add("loading");
 
-    const fullPrompt = conversationHistory.join("\n") + "\nBot: ";
+    const fullPrompt = conversationHistory.join("\n") + "\n<bot>: ";
     const baseUrl = window.location.origin;
     const requestOptions = {
         method: 'POST',

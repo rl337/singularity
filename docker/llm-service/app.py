@@ -1,11 +1,12 @@
 import argparse
+import logging
 import os.path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from drivers import PipelineTextGeneratorDriver
+from drivers import PipelineTextGeneratorDriver, Llama2TextGeneratorDriver, RedPajamaTextGeneratorDriver
 
 
 def create_generator(model_path):
@@ -13,6 +14,8 @@ def create_generator(model_path):
     return pipeline('text-generation', model=model_path)
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
     # Parse command line arguments for model path
     parser = argparse.ArgumentParser(description='LLM Service')
     parser.add_argument('model_path', type=str, help='Path to the model directory')
@@ -24,7 +27,15 @@ if __name__ == "__main__":
         raise FileNotFoundError(f"model path {model_dir} does not exist")
 
     # Initialize the model
-    model = PipelineTextGeneratorDriver(model_dir)
+    if 'LLaMA-2-7B-32K' in model_dir:
+        model_class = Llama2TextGeneratorDriver
+    elif 'RedPajama' in model_dir:
+        model_class = RedPajamaTextGeneratorDriver
+    else:
+        model_class = PipelineTextGeneratorDriver
+
+    logging.info(f"loading {model_class.__name__} from {model_dir}")
+    model = model_class(model_dir)
     model.initialize_generator()
 
     app = FastAPI()
