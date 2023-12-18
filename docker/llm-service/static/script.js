@@ -5,13 +5,36 @@ function updateConversation(msg, isUser) {
     conversationHistory.push(formattedMsg);
 
     // Keep only the last N interactions, if necessary
-    const maxHistorySize = 10;  // Example size
+    const maxHistorySize = 10; // Example size
     if (conversationHistory.length > maxHistorySize) {
         conversationHistory.shift(); // Remove the oldest interaction
     }
 
-    // Update textarea content
-    document.getElementById("conversation").value = conversationHistory.join("\n");
+    // Construct the display message with emoji
+    let displayMsg = (isUser ? "😊: " : "🤖: ") + escapeHtml(msg);
+
+    // Create a new div for the message
+    let messageDiv = document.createElement("div");
+    messageDiv.classList.add("message");
+    messageDiv.classList.add(isUser ? "user-message" : "service-response");
+    messageDiv.innerHTML = displayMsg; // Use innerHTML to render the display message
+
+    // Append the new message div to the conversation container
+    let conversationDiv = document.getElementById("conversation");
+    conversationDiv.appendChild(messageDiv);
+
+    // Scroll to the newest message
+    conversationDiv.scrollTop = conversationDiv.scrollHeight;
+}
+
+// Function to escape HTML characters in messages
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 function sendMessage() {
@@ -53,8 +76,11 @@ function sendMessage() {
 function resetConversation() {
     conversationHistory = []; // Clear the conversation history
 
-    // Clear the textarea content
-    document.getElementById("conversation").value = "";
+    // Clear all child elements from the conversation container
+    let conversationDiv = document.getElementById("conversation");
+    while (conversationDiv.firstChild) {
+        conversationDiv.removeChild(conversationDiv.firstChild);
+    }
 }
 
 window.onload = () => {
