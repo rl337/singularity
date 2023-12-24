@@ -2,15 +2,25 @@
 
 CONTAINERS_DIR=`dirname $0`
 
-
+ALL_CONTAINERS=`find "$CONTAINERS_DIR" -maxdepth 1 -type d | xargs -Ixxx basename xxx | grep -v '^\.\|^config$'`
 if [ "X$1" == "X" ]; then
-    CONTAINERS=`find "$CONTAINERS_DIR" -type d | xargs -Ixxx basename xxx | grep -v "^\."`
+    CONTAINERS="$ALL_CONTAINERS"
 else
-    CONTAINERS=`find "$CONTAINERS_DIR" -type d | xargs -Ixxx basename xxx | grep -v "^\." | grep "$1"`
+    CONTAINERS=`echo "$ALL_CONTAINERS" | grep "$1"`
 fi
 
+if [ "X$NOCACHE" != "X" ]; then
+    OTHER_ARGS="--no-cache"
+fi
 
+CONFIG_DIR="$CONTAINERS_DIR/config"
 for CONTAINER in $CONTAINERS; do
     echo "$CONTAINER"
-    docker build -t "$CONTAINER" "$CONTAINERS_DIR/$CONTAINER"
+    CONTAINER_DIR="$CONTAINERS_DIR/$CONTAINER"
+    docker build $OTHER_ARGS \
+        --build-arg PROJECT_DIR="$CONTAINER_DIR" \
+        --build-arg CONFIG_DIR="$CONFIG_DIR" \
+        -t "$CONTAINER" \
+        -f "$CONTAINER_DIR/Dockerfile" \
+        .
 done

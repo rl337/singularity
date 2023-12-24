@@ -1,5 +1,7 @@
-# Use an NVIDIA CUDA base image
-FROM nvidia/cuda:12.3.0-base-ubuntu22.04
+FROM 0-singularity-base
+
+ARG PROJECT_DIR
+ARG CONFIG_DIR
 
 # Set the working directory in the container
 WORKDIR /app
@@ -14,7 +16,9 @@ RUN pip3 install torch torchvision torchaudio --extra-index-url https://download
 RUN pip3 install transformers requests
 
 # Copy the Python script into the container at /app
-COPY app.py app.py
+COPY ${PROJECT_DIR}/app.py /app/app.py
+COPY ${CONFIG_DIR} /app/config
+
 
 # Define the entrypoint
 ENTRYPOINT ["python3", "app.py"]
