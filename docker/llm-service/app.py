@@ -1,6 +1,7 @@
 import argparse
 import logging
 import os.path
+import json
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,13 +19,23 @@ if __name__ == "__main__":
 
     # Parse command line arguments for model path
     parser = argparse.ArgumentParser(description='LLM Service')
+    parser.add_argument('model_config', type=str, help='Path to the model config json')
     parser.add_argument('model_path', type=str, help='Path to the model directory')
+    parser.add_argument('static_path', type=str, help='Path to static files for webapp')
     parser.add_argument('model', type=str, help='the name and commit hash of the model')
     args = parser.parse_args()
+
+    if not os.path.isfile(args.model_config):
+        raise FileNotFoundError(f"config path {args.model_config} does not exist")
+    with open(args.model_config, 'r') as fp:
+        model_config = json.load(fp)
 
     model_dir = os.path.join(args.model_path, args.model)
     if not os.path.isdir(model_dir):
         raise FileNotFoundError(f"model path {model_dir} does not exist")
+
+    if not os.path.isdir(args.static_path):
+        raise FileNotFoundError(f"static content path {args.static_path} does not exist")
 
     # Initialize the model
     if 'LLaMA-2-7B-32K' in model_dir:
@@ -48,7 +59,7 @@ if __name__ == "__main__":
     )
 
     app.add_api_route(path="/generate/", endpoint=model.generate_text, methods=["POST"])
-    app.mount("/", StaticFiles(directory="static", html=True), name="static")
+    app.mount("/", StaticFiles(directory=args.static_path, html=True), name="static")
     
     # Start the FastAPI app
     import uvicorn

@@ -18,4 +18,4 @@ COPY ${CONFIG_DIR} /app/config
 EXPOSE 8000
 
 # Run the application
-ENTRYPOINT ["python3", "app.py"]
+ENTRYPOINT ["python3", "/app/app.py"]
