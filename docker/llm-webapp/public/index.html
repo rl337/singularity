@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>>LLM Service Webapp</title>
+
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+</head>
+<body>
+    <div class="container">
+        <div class="conversation-pane">
+            <div id="conversation" class="conversation-container">
+                <!-- Messages will be dynamically added here -->
+            </div>
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button id="sendButton">Send</button>
+            <button id="resetButton">Reset</button>
+        </div>
+    
+        <div class="tools-pane">
+            <!-- Tab controls -->
+            <div class="tab">
+                <button class="tablinks" onclick="openTab('ModelParams')">Model Parameters</button>
+                <!-- More tabs can be added here -->
+            </div>
+    
+            <!-- Tab content -->
+            <div id="ModelParams" class="tabcontent">
+                <!-- Model parameters will be fetched and displayed here -->
+            </div>
+            <!-- Additional tabs' content -->
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

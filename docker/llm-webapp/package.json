@@ -1,0 +1,30 @@
+{
+  "name": "llm-webapp",
+  "version": "1.0.0",
+  "description": "Web Application frontend for llm-service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel public/index.html",
+    "build": "parcel build public/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rl337/singularity.git"
+  },
+  "author": "Richard Lee <rlee@tokyo3.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rl337/singularity/issues"
+  },
+  "homepage": "https://github.com/rl337/singularity#readme",
+  "dependencies": {
+    "dompurify": "^3.0.6",
+    "express": "^4.18.2",
+    "github-markdown-css": "^5.5.0",
+    "marked": "^11.1.0"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}
