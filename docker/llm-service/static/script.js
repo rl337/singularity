@@ -50,10 +50,20 @@ function sendMessage() {
 
     const fullPrompt = conversationHistory.join("\n") + "\n<bot>: ";
     const baseUrl = window.location.origin;
+
+    let customParameters = {};
+    document.querySelectorAll('#ModelParams input').forEach(input => {
+        // Convert numerical values to numbers to ensure proper JSON formatting
+        customParameters[input.id] = isNaN(input.value) ? input.value : Number(input.value);
+    });
+
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: fullPrompt, max_request_length: 100 }) // Adjust max_request_length as needed
+        body: JSON.stringify({
+            prompt: fullPrompt,
+            ...customParameters // Spread the custom parameters here
+        }) 
     };
 
     fetch(`${baseUrl}/generate/`, requestOptions)  // Make sure the URL is correct
@@ -83,11 +93,91 @@ function resetConversation() {
     }
 }
 
+function fetchModelConfig() {
+    const baseUrl = window.location.origin;
+    // Prepare the POST request options
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // Don't need to send a model parameter for the default model
+        body: JSON.stringify({}) // Empty body or relevant details if required by the endpoint
+    };
+
+    fetch(`${baseUrl}/model_config/`, requestOptions)
+        .then(response => response.json())
+        .then(config => {
+            populateConfigForm(config.config.args);
+        })
+        .catch(error => console.error('Error fetching model config:', error));
+}
+
+function populateConfigForm(args) {
+    const modelParamsDiv = document.getElementById('ModelParams');
+    modelParamsDiv.innerHTML = ''; // Clear previous content
+
+    // Create form elements for each argument
+    for (let key in args) {
+        // Create label
+        let label = document.createElement('label');
+        label.innerHTML = key + ': ';
+        label.htmlFor = key;
+        modelParamsDiv.appendChild(label);
+
+        // Create input field
+        let input = document.createElement('input');
+        input.type = 'text'; // Or 'number' if the parameter is always a number
+        input.id = key;
+        input.value = args[key]; // Set the current value
+        modelParamsDiv.appendChild(input);
+
+        // Add a break line
+        modelParamsDiv.appendChild(document.createElement('br'));
+    }
+}
+
+function openTab(tabName) {
+    // Get all elements with class="tabcontent" and hide them
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Activate the tab content
+    let targetTabContent = document.getElementById(tabName);
+    if (targetTabContent) {
+        targetTabContent.style.display = "block";
+    } else {
+        console.error(`No tab content found with ID '${tabName}'. Ensure the HTML structure is correct.`);
+    }
+
+    // Activate the corresponding tab link
+    let tabLink = document.querySelector(`.tablinks[onclick*="'${tabName}'"]`);
+    if (tabLink) {
+        tabLink.classList.add("active");
+    } else {
+        console.error(`No tab link found for '${tabName}'. Ensure the HTML structure is correct.`);
+    }
+
+}
+
+
 window.onload = () => {
     document.getElementById("userInput").addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
             sendMessage();
         }
     });
+    fetchModelConfig();
+    openTab('ModelParams'); // Open Model Parameters tab by default
+    document.querySelector(".tablinks").classList.add("active");
+
 }
+
 

@@ -56,6 +56,9 @@ class ModelConfigHandler(RequestHandler):
     def path(self):
         return '/model_config/'
 
+    def methods(self) -> List[str]:
+        return ["GET", "POST"]
+
 class GenerateTextHandler(RequestHandler):
     model_name: str
     model_config: Dict[str, Any]
@@ -142,7 +145,9 @@ if __name__ == "__main__":
     )
 
     for handler in handlers:
-        app.add_api_route(path=handler.path(), endpoint=handler.handle, methods=handler.methods())
+        handler_path = handler.path()
+        logging.info(f"adding api route {handler_path} to {handler.__class__.__name__}")
+        app.add_api_route(path=handler_path, endpoint=handler.handle, methods=handler.methods())
     app.mount("/", StaticFiles(directory=args.static_path, html=True), name="static")
     
     # Start the FastAPI app

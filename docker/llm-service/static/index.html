@@ -9,15 +9,29 @@
 
 </head>
 <body>
-    <div>
-<div id="conversation" class="conversation-container">
-    <!-- Messages will be dynamically added here -->
-</div>
-    </div>
-    <div>
-        <input type="text" id="userInput" placeholder="Type your message...">
-        <button id="sendButton" onclick="sendMessage()">Send</button>
-        <button id="resetButton" onclick="resetConversation()">Reset</button>
+    <div class="container">
+        <div class="conversation-pane">
+            <div id="conversation" class="conversation-container">
+                <!-- Messages will be dynamically added here -->
+            </div>
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button id="sendButton" onclick="sendMessage()">Send</button>
+            <button id="resetButton" onclick="resetConversation()">Reset</button>
+        </div>
+    
+        <div class="tools-pane">
+            <!-- Tab controls -->
+            <div class="tab">
+                <button class="tablinks" onclick="openTab('ModelParams')">Model Parameters</button>
+                <!-- More tabs can be added here -->
+            </div>
+    
+            <!-- Tab content -->
+            <div id="ModelParams" class="tabcontent">
+                <!-- Model parameters will be fetched and displayed here -->
+            </div>
+            <!-- Additional tabs' content -->
+        </div>
     </div>
 
     <script src="script.js"></script>
