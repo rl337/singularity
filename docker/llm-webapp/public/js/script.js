@@ -25,7 +25,7 @@ function escapeHtml(str) {
 }
 
 function updateConversation(msg, isUser) {
-    let formattedMsg = (isUser ? "<human>: " : "<bot>: ") + escapeHtml(msg);
+    let formattedMsg = (isUser ? "<human>: " : "<bot>: ") + msg;
     conversationHistory.push(formattedMsg);
 
     // Keep only the last N interactions, if necessary
@@ -35,7 +35,7 @@ function updateConversation(msg, isUser) {
     }
 
     // Construct the display message with emoji
-    let displayMsg = (isUser ? "😊: " : "🤖: ") + msg;
+    let displayMsg = (isUser ? "😊: " : "🤖: ") + escapeHtml(msg);
 
     let htmlContent = marked.parse(displayMsg);
     let safeHtmlContent = DOMPurify.sanitize(htmlContent);
