@@ -21,7 +21,7 @@ class RequestHandler:
     def initialize_handler(self):
         raise NotImplementedError("RequestHandler::initialize_handler must be implemented by subclasses")
 
-    def handle(self, request: TextGeneratorRequest) -> Any:
+    def get_handle_method(self) -> Any:
         raise NotImplementedError("RequestHandler::handle must be implemented by subclasses")
 
     def path(self) -> str:
@@ -52,6 +52,9 @@ class ModelConfigHandler(RequestHandler):
         if model_name not in model_list:
             raise ValueError(f"model {model_name} must be one of {model_list}")
         return { "model": model_name, "config": self.model_list_config[model_name] }
+
+    def get_handle_method(self):
+        return self.handle
 
     def path(self):
         return '/model_config/'
@@ -93,11 +96,31 @@ class GenerateTextHandler(RequestHandler):
         self.model = model_class(model_dir)
         self.model.initialize_generator()
 
-    def handle(self, request: TextGeneratorRequest):
-        return self.model.generate_text(request)
+    def get_handle_method(self):
+        return self.model.generate_text
+
+    
 
     def path(self):
         return '/generate/'
+
+
+def load_model_list_config(filename: str) -> Dict[str, Any]:
+
+    with open(args.model_list_config, 'r') as fp:
+        model_list_config = json.load(fp)
+
+        default_config = {"args": {}}
+        if "default" in model_list_config:
+            default_config = model_list_config["default"]
+        model_list_config.pop("default", None)
+
+        result = {}
+        for model_name in model_list_config:
+            result[model_name] = { **default_config, **model_list_config[model_name] }
+            result[model_name]["args"] = { **default_config["args"], **model_list_config[model_name]["args"] }
+    
+        return result
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -118,8 +141,8 @@ if __name__ == "__main__":
     if not os.path.isfile(args.model_list_config):
         raise FileNotFoundError(f"config path {args.model_list_config} does not exist")
 
-    with open(args.model_list_config, 'r') as fp:
-        model_list_config = json.load(fp)
+    model_list_config = load_model_list_config(args.model_list_config)
+    logging.info(f"using model configs: {json.dumps(model_list_config, indent=2)}")
 
     models_list = list(model_list_config.keys())
     if args.model not in models_list:
@@ -147,7 +170,7 @@ if __name__ == "__main__":
     for handler in handlers:
         handler_path = handler.path()
         logging.info(f"adding api route {handler_path} to {handler.__class__.__name__}")
-        app.add_api_route(path=handler_path, endpoint=handler.handle, methods=handler.methods())
+        app.add_api_route(path=handler_path, endpoint=handler.get_handle_method(), methods=handler.methods())
     app.mount("/", StaticFiles(directory=args.static_path, html=True), name="static")
     
     # Start the FastAPI app

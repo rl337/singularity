@@ -1,9 +1,13 @@
 {
+    "default": {
+        "args": {
+            "max_new_tokens": 256
+        }
+    },
     "togethercomputer/RedPajama-INCITE-Chat-3B-v1": {
         "git": "https://huggingface.co/togethercomputer/RedPajama-INCITE-Chat-3B-v1.git",
         "driver": {"package": "drivers.togethercomputer", "class": "RedPajamaTextGeneratorDriver"},
         "args": {
-            "max_new_tokens": 128,
             "do_sample": true,
             "temperature": 0.7, 
             "top_p": 0.7,

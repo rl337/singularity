@@ -1,4 +1,5 @@
 import torch
+import logging
 from drivers.common import TextGeneratorRequest, TextGeneratorDriver
 from transformers import AutoTokenizer, AutoModelForCausalLM, PreTrainedTokenizer, PreTrainedModel
 
@@ -21,6 +22,15 @@ class Llama2TextGeneratorDriver(TextGeneratorDriver):
         output_text = tokenizer.decode(output[0], skip_special_tokens=True)
         return {"generated_text": output_text}
 
+
+class RedPajamaTextGeneratorRequest(TextGeneratorRequest):
+    max_new_tokens: int
+    do_sample: bool
+    temperature: float
+    top_p: float
+    top_k: int
+    return_dict_in_generate: bool
+
 # Driver for RedPajama-INCITE-Chat-3B-v1
 class RedPajamaTextGeneratorDriver(TextGeneratorDriver):
     tokenizer: PreTrainedTokenizer
@@ -32,15 +42,19 @@ class RedPajamaTextGeneratorDriver(TextGeneratorDriver):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(device)
 
-
-    def generate_text(self, request: TextGeneratorRequest):
+    def generate_text(self, request: RedPajamaTextGeneratorRequest):
         input_ids = self.tokenizer.encode(request.prompt, return_tensors="pt")
+
+        kwargs = request.dict()
+        kwargs.pop("prompt", None)
+        logging.info(f"request was: {kwargs}")
 
         inputs = self.tokenizer(request.prompt, return_tensors='pt').to(self.model.device)
         input_length = inputs.input_ids.shape[1]
-        outputs = self.model.generate(
-            **inputs, max_new_tokens=128, do_sample=True, temperature=0.7, top_p=0.7, top_k=50, return_dict_in_generate=True
-        )
+        outputs = self.model.generate(**kwargs, **inputs)
+        # outputs = self.model.generate(
+        #     **inputs, max_new_tokens=128, do_sample=True, temperature=0.7, top_p=0.7, top_k=50, return_dict_in_generate=True
+        # )
         token = outputs.sequences[0, input_length:]
         output_text = self.tokenizer.decode(token)
         return {"generated_text": output_text}
