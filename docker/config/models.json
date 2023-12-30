@@ -14,5 +14,23 @@
             "top_k": 50,
             "return_dict_in_generate": true
         }
+    },
+    "TinyLlama-1.1B-intermediate-step-1431k-3T": {
+        "git": "https://huggingface.co/TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
+        "driver": {"package": "drivers.common", "class": "PipelineTextGeneratorDriver"},
+        "args": { }
+    },
+    "togethercomputer/StripedHyena-Nous-7B": {
+        "git": "https://huggingface.co/togethercomputer/StripedHyena-Nous-7B",
+        "driver": {"package": "drivers.togethercomputer", "class": "StripedHyenaTextGeneratorDriver"},
+        "args": {
+            "temperature": 1, 
+            "top_p": 1,
+            "top_k": 1,
+            "repetition_penalty": 0.2,
+            "penalty_alpha": 0.5,
+            "do_sample": true,
+            "eos_token_id": 0
+        }
     }
 }

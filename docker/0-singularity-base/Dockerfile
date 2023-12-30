@@ -14,5 +14,7 @@ RUN pip3 install transformers requests sentencepiece ninja
 
 # install flash-attn and this other thing in this sequence with these options
 RUN pip install flash-attn --no-build-isolation
+RUN pip install git+https://github.com/HazyResearch/flash-attention.git#subdirectory=csrc/layer_norm
 RUN pip install git+https://github.com/HazyResearch/flash-attention.git#subdirectory=csrc/rotary
 
+RUN apt-get install -y vim
