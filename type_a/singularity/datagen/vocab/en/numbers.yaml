@@ -16,6 +16,7 @@ zero:
   - nada
   - zippo
   - nullity
+
 one:
   - 1
   - one
@@ -33,6 +34,7 @@ one:
   - individualized
   - lone wolf
   - one and only
+
 two:
   - 2
   - two
@@ -43,39 +45,89 @@ two:
   - twin
   - double
   - binary
+
 three:
   - 3
   - three
   - trio
   - triad
   - ternary
+
 four:
   - 4
   - four
   - quartet
   - quadruple
+
 five:
   - 5
   - five
   - quintet
   - quintuple
+
 six:
   - 6
   - six
   - sextet
   - sextuple
+
 seven:
   - 7
   - seven
   - septet
   - septuple
+
 eight:
   - 8
   - eight
   - octet
   - octuple
+
 nine:
   - 9
   - nine
   - nonet
   - nonuple
+
+ten:
+  - 10
+  - ten
+  - decuple
+
+eleven:
+  - 11
+  - eleven
+
+twelve:
+  - 12
+  - twelve
+  - dozen
+
+thirteen:
+  - 13
+  - thirteen
+
+fourteen:
+  - 14
+  - fourteen
+
+fifteen:
+  - 15
+  - fifteen
+
+sixteen:
+  - 16
+  - sixteen
+
+seventeen:
+  - 17
+  - seventeen
+
+eighteen:
+  - 18
+  - eighteen
+
+nineteen:
+  - 19
+  - nineteen
+
