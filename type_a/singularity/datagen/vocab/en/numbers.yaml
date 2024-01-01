@@ -131,3 +131,384 @@ nineteen:
   - 19
   - nineteen
 
+twenty:
+  - 20
+  - twenty
+  - score
+
+twenty-one:
+  - 21
+  - twenty-one
+
+twenty-two:
+  - 22
+  - twenty-two
+
+twenty-three:
+  - 23
+  - twenty-three
+
+twenty-four:
+  - 24
+  - twenty-four
+
+twenty-five:
+  - 25
+  - twenty-five
+
+twenty-six:
+  - 26
+  - twenty-six
+
+twenty-seven:
+  - 27
+  - twenty-seven
+
+twenty-eight:
+  - 28
+  - twenty-eight
+
+twenty-nine:
+  - 29
+  - twenty-nine
+
+thirty:
+  - 30
+  - thirty
+
+thirty-one:
+  - 31
+  - thirty-one
+
+thirty-two:
+  - 32
+  - thirty-two
+
+thirty-three:
+  - 33
+  - thirty-three
+
+thirty-four:
+  - 34
+  - thirty-four
+
+thirty-five:
+  - 35
+  - thirty-five
+
+thirty-six:
+  - 36
+  - thirty-six
+
+thirty-seven:
+  - 37
+  - thirty-seven
+
+thirty-eight:
+  - 38
+  - thirty-eight
+
+thirty-nine:
+  - 39
+  - thirty-nine
+
+forty:
+  - 40
+  - forty
+
+forty-one:
+  - 41
+  - forty-one
+
+forty-two:
+  - 42
+  - forty-two
+
+forty-three:
+  - 43
+  - forty-three
+
+forty-four:
+  - 44
+  - forty-four
+
+forty-five:
+  - 45
+  - forty-five
+
+forty-six:
+  - 46
+  - forty-six
+
+forty-seven:
+  - 47
+  - forty-seven
+
+forty-eight:
+  - 48
+  - forty-eight
+
+forty-nine:
+  - 49
+  - forty-nine
+
+fifty:
+  - 50
+  - fifty
+
+fifty-one:
+  - 51
+  - fifty-one
+
+fifty-two:
+  - 52
+  - fifty-two
+
+fifty-three:
+  - 53
+  - fifty-three
+
+fifty-four:
+  - 54
+  - fifty-four
+
+fifty-five:
+  - 55
+  - fifty-five
+
+fifty-six:
+  - 56
+  - fifty-six
+
+fifty-seven:
+  - 57
+  - fifty-seven
+
+fifty-eight:
+  - 58
+  - fifty-eight
+
+fifty-nine:
+  - 59
+  - fifty-nine
+
+sixty:
+  - 60
+  - sixty
+
+sixty-one:
+  - 61
+  - sixty-one
+
+sixty-two:
+  - 62
+  - sixty-two
+
+sixty-three:
+  - 63
+  - sixty-three
+
+sixty-four:
+  - 64
+  - sixty-four
+
+sixty-five:
+  - 65
+  - sixty-five
+
+sixty-six:
+  - 66
+  - sixty-six
+
+sixty-seven:
+  - 67
+  - sixty-seven
+
+sixty-eight:
+  - 68
+  - sixty-eight
+
+sixty-nine:
+  - 69
+  - sixty-nine
+
+seventy:
+  - 70
+  - seventy
+
+seventy-one:
+  - 71
+  - seventy-one
+
+seventy-two:
+  - 72
+  - seventy-two
+
+seventy-three:
+  - 73
+  - seventy-three
+
+seventy-four:
+  - 74
+  - seventy-four
+
+seventy-five:
+  - 75
+  - seventy-five
+
+seventy-six:
+  - 76
+  - seventy-six
+
+seventy-seven:
+  - 77
+  - seventy-seven
+
+seventy-eight:
+  - 78
+  - seventy-eight
+
+seventy-nine:
+  - 79
+  - seventy-nine
+
+eighty:
+  - 80
+  - eighty
+
+eighty-one:
+  - 81
+  - eighty-one
+
+eighty-two:
+  - 82
+  - eighty-two
+
+eighty-three:
+  - 83
+  - eighty-three
+
+eighty-four:
+  - 84
+  - eighty-four
+
+eighty-five:
+  - 85
+  - eighty-five
+
+eighty-six:
+  - 86
+  - eighty-six
+
+eighty-seven:
+  - 87
+  - eighty-seven
+
+eighty-eight:
+  - 88
+  - eighty-eight
+
+eighty-nine:
+  - 89
+  - eighty-nine
+
+ninety:
+  - 90
+  - ninety
+
+ninety-one:
+  - 91
+  - ninety-one
+
+ninety-two:
+  - 92
+  - ninety-two
+
+ninety-three:
+  - 93
+  - ninety-three
+
+ninety-four:
+  - 94
+  - ninety-four
+
+ninety-five:
+  - 95
+  - ninety-five
+
+ninety-six:
+  - 96
+  - ninety-six
+
+ninety-seven:
+  - 97
+  - ninety-seven
+
+ninety-eight:
+  - 98
+  - ninety-eight
+
+ninety-nine:
+  - 99
+  - ninety-nine
+
+hundred:
+  - 100
+  - hundred
+  - a hundred
+  - one hundred
+
+two-hundred:
+  - 200
+  - two hundred
+
+three-hundred:
+  - 300
+  - three hundred
+
+four-hundred:
+  - 400
+  - four hundred
+
+five-hundred:
+  - 500
+  - five hundred
+
+six-hundred:
+  - 600
+  - six hundred
+
+seven-hundred:
+  - 700
+  - seven hundred
+
+eight-hundred:
+  - 800
+  - eight hundred
+
+nine-hundred:
+  - 900
+  - nine hundred
+
+thousand:
+  - 1000
+  - thousand
+  - one thousand
+
+million:
+  - 1000000
+  - million
+
+billion:
+  - 1000000000
+  - billion
+
+trillion:
+  - 1000000000000
+  - trillion
+
+quadrillion:
+  - 1000000000000000
+  - quadrillion
+
+
