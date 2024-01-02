@@ -82,7 +82,7 @@ def main():
                 trainingset.add_random_number(-range_max, -range_min)
                 trainingset.add_random_number(range_min, range_max)
     
-    trainingset.write()
+    trainingset.write_for_gpt2()
 
 
 if __name__ == '__main__':

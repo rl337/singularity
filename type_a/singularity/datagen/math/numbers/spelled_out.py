@@ -53,6 +53,8 @@ powers = {
 
 powers_inv = { powers[x]:x for x in powers }
 powers_sorted = sorted_keys = sorted(powers, key=powers.get, reverse=True)
+lowest_power = powers[powers_sorted[-1]]
+highest_power = powers[powers_sorted[0]]
 
 def generate_3_digit_number(raw_number: int, use_final_and=False, use_tens_space=True, use_tens_dash=True):
 
@@ -61,7 +63,7 @@ def generate_3_digit_number(raw_number: int, use_final_and=False, use_tens_space
     if number != raw_number:
         sign = True
 
-    if number == 0 or number >= 1000:
+    if number >= 1000:
         return None
 
     parts = []
@@ -106,13 +108,15 @@ def generate_3_digit_number(raw_number: int, use_final_and=False, use_tens_space
 def generate_number_string(number: int, use_grouping_commas=True, use_final_and=False, use_tens_dash=True, use_tens_space=True):
 
     remainder = abs(number)
-    if remainder > 999 * powers[powers_sorted[0]]:
+    if remainder > 999 * highest_power:
         return None
 
     parts = []
     if remainder != number:
         parts.append("negative")
-     
+
+    if remainder == 0:
+        parts.append(digits_inv[0])
 
     for power in powers_sorted:
         power_value = powers[power]
