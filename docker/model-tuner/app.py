@@ -1,14 +1,15 @@
 import argparse
 import tarfile
 
-from transformers import GPT2Tokenizer, GPT2LMHeadModel, AdamW, get_linear_schedule_with_warmup
+from transformers import GPT2Tokenizer, GPT2LMHeadModel, get_linear_schedule_with_warmup
 import torch
+from torch.optim import AdamW
 from torch.utils.data import Dataset, DataLoader
 
 
 # Load your data into a suitable format (adjust according to your data)
 class LoadedDataset(Dataset):
-    def __init__(self, tokenizer, file_path):
+    def __init__(self, tokenizer, file_path, block_size=32):
         self.tokenizer = tokenizer
         self.inputs = []
         self.attn_masks = []
@@ -16,7 +17,8 @@ class LoadedDataset(Dataset):
         with tarfile.open(file_path, 'r:gz') as tgz:
             for member in tgz.getmembers():
                 with tgz.extractfile(member) as file_obj:
-                    for line in file_obj:
+                    for line_bytes in file_obj:
+                        line = line_bytes.decode('utf-8').strip()
                         encoding = tokenizer(line, max_length=block_size, truncation=True, padding="max_length", return_tensors="pt")
                         self.inputs.append(encoding.input_ids.squeeze())  # Squeeze to remove batch dimension
                         self.attn_masks.append(encoding.attention_mask.squeeze())
@@ -36,25 +38,33 @@ parser.add_argument("base_model_dir", type=str, help="Directory containing the b
 parser.add_argument("training_set", type=str, help="Tarball (.tgz) file containing the training set.")
 parser.add_argument("output_dir", type=str, help="Directory where the fine-tuned model will be written.")
 parser.add_argument("--validation_set", type=str, default=None, help="Optional tarball (.tgz) file containing the validation set.")
+parser.add_argument("--max_length", type=int, default=1024, help="max_length for the tokenizer")
+parser.add_argument("--epochs", type=int, default=32, help="block size for the tokenizer")
+parser.add_argument("--batch_size", type=int, default=8, help="data loader batch size")
 
 # Parse arguments
 args = parser.parse_args()
 
 # Extract and load data
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
+tokenizer = GPT2Tokenizer.from_pretrained(args.base_model_dir, local_files_only=True)
+tokenizer.pad_token = tokenizer.eos_token
+
 dataset = LoadedDataset(tokenizer, args.training_set)
-data_loader = DataLoader(dataset, batch_size=1)  # adjust batch size as needed
+data_loader = DataLoader(dataset, batch_size=args.batch_size)  # adjust batch size as needed
 
 # Step 2: Fine Tune the Model
-model = GPT2LMHeadModel.from_pretrained(args.base_model_dir)
-model = model.to('cuda' if torch.cuda.is_available() else 'cpu')  # Move model to GPU if available
+model = GPT2LMHeadModel.from_pretrained(args.base_model_dir, local_files_only=True)
+
+if not torch.cuda.is_available():
+    raise Exception("cuda is not avaiailable")
+model = model.to('cuda')
 
 optimizer = AdamW(model.parameters(), lr=5e-5)  # Set up the optimizer
-total_steps = len(data_loader) * epochs  # Total number of training steps
+total_steps = len(data_loader) * args.epochs  # Total number of training steps
 
 # Training loop
 model.train()
-for epoch in range(epochs):
+for epoch in range(args.epochs):
     for batch in data_loader:
         inputs, masks = batch
         outputs = model(inputs, attention_mask=masks, labels=inputs)
