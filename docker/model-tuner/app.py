@@ -54,9 +54,6 @@ data_loader = DataLoader(dataset, batch_size=args.batch_size)  # adjust batch si
 
 # Step 2: Fine Tune the Model
 model = GPT2LMHeadModel.from_pretrained(args.base_model_dir, local_files_only=True)
-
-if not torch.cuda.is_available():
-    raise Exception("cuda is not avaiailable")
 model = model.to('cuda')
 
 optimizer = AdamW(model.parameters(), lr=5e-5)  # Set up the optimizer
@@ -67,6 +64,8 @@ model.train()
 for epoch in range(args.epochs):
     for batch in data_loader:
         inputs, masks = batch
+        inputs = inputs.to('cuda')
+        masks = masks.to('cuda')
         outputs = model(inputs, attention_mask=masks, labels=inputs)
         loss = outputs.loss
 
@@ -88,5 +87,4 @@ model.save_pretrained(args.output_dir)
 # Step 4: Summarize Performance
 # Calculate and print out performance metrics
 # ...
-
 

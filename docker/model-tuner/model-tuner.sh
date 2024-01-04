@@ -5,6 +5,7 @@ DATA_STORAGE=/mnt/bfd/datasets
 MODELS_CONFIG=./`dirname $0`
 
 docker run \
+    --gpus all \
     -v "$MODELS_CONFIG":/config \
     -v "$MODELS_STORAGE":/models \
     -v "$DATA_STORAGE":/data \
