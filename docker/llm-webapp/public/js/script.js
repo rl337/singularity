@@ -3,6 +3,7 @@ const DOMPurify = require('dompurify')(window); // Assuming you're in a browser 
 import 'github-markdown-css';
 
 let conversationHistory = [];
+let promptTemplate = "<human>: {user_input}\n<bot>: "
 
 // Assuming your API service runs on port 8000
 const apiPort = 8000;
@@ -13,8 +14,8 @@ const {protocol, hostname} = window.location;
 // Construct the base URL for the API service
 const serviceBaseUrl = `${protocol}//${hostname}:${apiPort}`;
 
-function escapeHtml(str) {
-    return str
+function escapeHtml(str, preserveNewlines = false) {
+   let escaped = str
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -22,6 +23,12 @@ function escapeHtml(str) {
         .replace(/'/g, "&#039;")
         .replace(/</g, "&lt;") // Escape opening angle brackets
         .replace(/>/g, "&gt;"); // Escape closing angle brackets
+
+    if (preserveNewlines) {
+        escaped = escaped.replace(/\n/g, '<br />');   
+    }
+
+    return escaped
 }
 
 function updateConversation(msg, isUser) {
@@ -73,7 +80,7 @@ function sendMessage() {
     document.getElementById("resetButton").disabled = true;
     document.getElementById("conversation").classList.add("loading");
 
-    const fullPrompt = conversationHistory.join("\n") + "\n<bot>: ";
+    const fullPrompt = promptTemplate.replace("{user_input}", JSON.stringify(userInput));
 
     let customParameters = {};
     document.querySelectorAll('#ModelParams input').forEach(input => {
@@ -129,9 +136,15 @@ function fetchModelConfig() {
     fetch(`${serviceBaseUrl}/model_config/`, requestOptions)
         .then(response => response.json())
         .then(config => {
+            if (config.config.prompt) {
+                promptTemplate = config.config.prompt;
+            }
             populateConfigForm(config.config.args);
         })
-        .catch(error => console.error('Error fetching model config:', error));
+        .catch(error => {
+            console.error('Error fetching model config:', error);
+            populateConfigForm({});
+        });
 }
 
 function populateConfigForm(args) {
@@ -158,6 +171,43 @@ function populateConfigForm(args) {
     }
 }
 
+function displayFormPostResponseTab() {
+    // Logic to fetch and display the last form post JSON and response JSON
+    // Example:
+    const formPostJson = { /* JSON data */ };
+    const responseJson = { /* JSON data */ };
+
+    // Display the data within the 'FormPostResponse' tab content div
+    const formPostResponseTabContent = document.getElementById('FormPostResponse');
+    formPostResponseTabContent.innerHTML = `
+        <h2>Last Form Post JSON:</h2>
+        <pre>${JSON.stringify(formPostJson, null, 2)}</pre>
+        <h2>Response JSON:</h2>
+        <pre>${JSON.stringify(responseJson, null, 2)}</pre>
+    `;
+}
+
+function displayGlobalVariablesTab() {
+
+    // Replace these variables with your actual global variables
+    const globalVariables = [
+        { name: "Prompt Template", value: escapeHtml(promptTemplate, true) },
+        // Add more variables as needed
+    ];
+
+    const globalVariablesTableBody = document.getElementById('globalVariablesTableBody');
+    globalVariablesTableBody.innerHTML = ""; // Clear previous content
+
+    globalVariables.forEach(variable => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${variable.name}</td>
+            <td>${variable.value}</td>
+        `;
+        globalVariablesTableBody.appendChild(row);
+    });
+}
+
 function openTab(tabName) {
     // Get all elements with class="tabcontent" and hide them
     var i, tabcontent, tablinks;
@@ -180,13 +230,17 @@ function openTab(tabName) {
         console.error(`No tab content found with ID '${tabName}'. Ensure the HTML structure is correct.`);
     }
 
-    // Activate the corresponding tab link
-    let tabLink = document.querySelector(`.tablinks[onclick*="'${tabName}'"]`);
-    if (tabLink) {
-        tabLink.classList.add("active");
-    } else {
-        console.error(`No tab link found for '${tabName}'. Ensure the HTML structure is correct.`);
+
+    switch (tabName) {
+        case 'FormPostResponse':
+            displayFormPostResponseTab();
+            break;
+        case 'GlobalVariables':
+            displayGlobalVariablesTab();
+            break;
+        // Add more cases for other tabs as needed
     }
+
 
 }
 
@@ -201,6 +255,17 @@ window.onload = () => {
     openTab('ModelParams'); // Open Model Parameters tab by default
     document.querySelector(".tablinks").classList.add("active");
 
+    const tabButtons = document.querySelectorAll(".tablinks");
+    tabButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const tabName = this.getAttribute("data-tabname");
+            openTab(tabName);
+
+            // Activate the clicked tab link
+            tabButtons.forEach(tabButton => tabButton.classList.remove("active"));
+            this.classList.add("active");
+        });
+    });
 }
 
 // Initialization function to set up event listeners

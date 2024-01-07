@@ -22,7 +22,9 @@
         <div class="tools-pane">
             <!-- Tab controls -->
             <div class="tab">
-                <button class="tablinks" onclick="openTab('ModelParams')">Model Parameters</button>
+                <button class="tablinks" data-tabname="ModelParams">Model Parameters</button>
+                <button class="tablinks" data-tabname="FormPostResponse">Form Post & Response</button>
+                <button class="tablinks" data-tabname="GlobalVariables">Global Variables</button>
                 <!-- More tabs can be added here -->
             </div>
     
@@ -30,6 +32,20 @@
             <div id="ModelParams" class="tabcontent">
                 <!-- Model parameters will be fetched and displayed here -->
             </div>
+
+            <div id="FormPostResponse" class="tabcontent">
+              <!-- Form post and response content here -->
+            </div>
+
+            <div id="GlobalVariables" class="tabcontent">
+                <h2>Global Variables</h2>
+                <table class="global-variables-table">
+                  <thead><tr><th>Variable Name</th><th>Value</th></tr></thead>
+                  <tbody id="globalVariablesTableBody">
+                  </tbody>
+                </table>
+            </div>
+
             <!-- Additional tabs' content -->
         </div>
     </div>

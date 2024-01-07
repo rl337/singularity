@@ -77,3 +77,38 @@ button:disabled {
     border-top: none;
 }
 
+/* Style for the global variables table */
+.global-variables-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    background-color: #f2f2f2; /* Default background color for the entire table */
+}
+
+/* Style for table headers (Variable Name and Value) */
+.global-variables-table th {
+    background-color: #ddd; /* Background color for headers, same as inactive tabs */
+    font-weight: normal; /* Remove bold font for headers */
+    padding: 8px;
+    text-align: left;
+}
+
+/* Style for table rows */
+.global-variables-table tbody tr {
+    /* No background color for rows, allowing the default background color */
+}
+
+/* Style for variable names (first column) */
+.global-variables-table tbody td:first-child {
+    font-family: inherit; /* Use the same font as the rest of the page */
+    font-size: inherit; /* Use the same font size as the rest of the page */
+    background-color: #ddd; /* Background color for variable names, same as inactive tabs */
+    padding: 8px;
+}
+
+/* Style for values (second column) */
+.global-variables-table tbody td:last-child {
+    font-family: monospace; /* Use a preformatted font for values */
+    padding: 8px;
+}
+
