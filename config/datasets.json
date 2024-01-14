@@ -1,0 +1,9 @@
+[
+    {
+        "id": "imdb_movie_reviews",
+        "name": "Large Movie Review Dataset",
+        "url": "https://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz",
+        "homepage": "https://ai.stanford.edu/~amaas/data/sentiment/",
+        "bib": "https://ai.stanford.edu/~amaas/papers/wvSent_acl2011.bib"
+    }
+]

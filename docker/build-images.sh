@@ -1,6 +1,11 @@
 #!/bin/bash
 
-CONTAINERS_DIR=`dirname $0`
+SCRIPT_DIR=`dirname $0`
+
+cd "$SCRIPT_DIR/.."
+
+SINGULARITY_DIR="."
+CONTAINERS_DIR="$SINGULARITY_DIR/docker"
 
 ALL_CONTAINERS=`find "$CONTAINERS_DIR" -maxdepth 1 -type d | xargs -Ixxx basename xxx | grep -v '^\.\|^config$'`
 if [ "X$1" == "X" ]; then
@@ -13,7 +18,7 @@ if [ "X$NOCACHE" != "X" ]; then
     OTHER_ARGS="--no-cache"
 fi
 
-CONFIG_DIR="$CONTAINERS_DIR/config"
+CONFIG_DIR="$SINGULARITY_DIR/config"
 for CONTAINER in $CONTAINERS; do
     echo "$CONTAINER"
     CONTAINER_DIR="$CONTAINERS_DIR/$CONTAINER"

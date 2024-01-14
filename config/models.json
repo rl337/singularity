@@ -13,12 +13,19 @@
             "top_p": 0.7,
             "top_k": 50,
             "return_dict_in_generate": true
-        }
+        },
+        "prompt": "<human>: {user_input}\n<bot>: "
     },
     "TinyLlama-1.1B-intermediate-step-1431k-3T": {
         "git": "https://huggingface.co/TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
         "driver": {"package": "drivers.common", "class": "PipelineTextGeneratorDriver"},
         "args": { }
+    },
+    "gpt2-singularity": {
+        "git": "",
+        "driver": {"package": "drivers.common", "class": "PipelineTextGeneratorDriver"},
+        "args": { },
+        "prompt": "Input: \"{user_input}\"\nOutput: "
     },
     "togethercomputer/StripedHyena-Nous-7B": {
         "git": "https://huggingface.co/togethercomputer/StripedHyena-Nous-7B",
