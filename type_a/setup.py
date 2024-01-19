@@ -47,13 +47,20 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/rl337/singularity",
     packages=find_packages(
-        include=['singularity']
+        include=['singularity', 'singularity.*']
     ),
     test_suite='tests',
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "License :: OSI Approved :: Creative Commons Attribution License",
     ],
+    entry_points={
+        'console_scripts': [
+            'llm-service = singularity.cmd.llm_service:main',
+            'model-manager = singularity.cmd.model_manager:main',
+            'model-tuner = singularity.cmd.model_tuner:main'
+        ],
+    },
     python_requires='>=3.6',
     install_requires=requirements
 )

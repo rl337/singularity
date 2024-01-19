@@ -6,6 +6,7 @@ cd "$SCRIPT_DIR/.."
 
 SINGULARITY_DIR="."
 CONTAINERS_DIR="$SINGULARITY_DIR/docker"
+TYPEA_DIR="$SINGULARITY_DIR/type_a"
 
 ALL_CONTAINERS=`find "$CONTAINERS_DIR" -maxdepth 1 -type d | xargs -Ixxx basename xxx | grep -v '^\.\|^config$'`
 if [ "X$1" == "X" ]; then
@@ -25,6 +26,7 @@ for CONTAINER in $CONTAINERS; do
     docker build $OTHER_ARGS \
         --build-arg PROJECT_DIR="$CONTAINER_DIR" \
         --build-arg CONFIG_DIR="$CONFIG_DIR" \
+        --build-arg TYPEA_DIR="$TYPEA_DIR" \
         -t "$CONTAINER" \
         -f "$CONTAINER_DIR/Dockerfile" \
         .

@@ -6,7 +6,7 @@
     },
     "togethercomputer/RedPajama-INCITE-Chat-3B-v1": {
         "git": "https://huggingface.co/togethercomputer/RedPajama-INCITE-Chat-3B-v1.git",
-        "driver": {"package": "drivers.togethercomputer", "class": "RedPajamaTextGeneratorDriver"},
+        "driver": {"package": "singularity.models.llm.drivers.togethercomputer", "class": "RedPajamaTextGeneratorDriver"},
         "args": {
             "do_sample": true,
             "temperature": 0.7, 
@@ -18,7 +18,7 @@
     },
     "TinyLlama-1.1B-intermediate-step-1431k-3T": {
         "git": "https://huggingface.co/TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
-        "driver": {"package": "drivers.common", "class": "PipelineTextGeneratorDriver"},
+        "driver": {"package": "singularity.models.llm.drivers.common", "class": "PipelineTextGeneratorDriver"},
         "args": { }
     },
     "gpt2-singularity": {
@@ -29,7 +29,7 @@
     },
     "togethercomputer/StripedHyena-Nous-7B": {
         "git": "https://huggingface.co/togethercomputer/StripedHyena-Nous-7B",
-        "driver": {"package": "drivers.togethercomputer", "class": "StripedHyenaTextGeneratorDriver"},
+        "driver": {"package": "singularity.models.llm.drivers.togethercomputer", "class": "StripedHyenaTextGeneratorDriver"},
         "args": {
             "temperature": 1, 
             "top_p": 1,

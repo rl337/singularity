@@ -9,7 +9,7 @@ from typing import Optional, Dict, List, Any
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from drivers.common import TextGeneratorDriver, TextGeneratorRequest
+from singularity.models.llm.drivers.common import TextGeneratorDriver, TextGeneratorRequest
 
 from pydantic import BaseModel
 
@@ -18,7 +18,7 @@ class ModelConfigRequest(BaseModel):
 
 class RequestHandler:
     
-    def initialize_handler(self):
+    def initialize_handler(self, args):
         raise NotImplementedError("RequestHandler::initialize_handler must be implemented by subclasses")
 
     def get_handle_method(self) -> Any:
@@ -38,7 +38,7 @@ class ModelConfigHandler(RequestHandler):
         self.active_model_name = model_name
         self.model_list_config = model_list_config
 
-    def initialize_handler(self):
+    def initialize_handler(self, args):
         model_name = self.active_model_name
         model_list = list(self.model_list_config.keys())
         if model_name not in model_list:
@@ -72,10 +72,11 @@ class GenerateTextHandler(RequestHandler):
         self.model_config = model_config
         self.model = None
 
-    def initialize_handler(self):
-        if "driver" not in model_config:
+    def initialize_handler(self, args):
+        if "driver" not in self.model_config:
             raise ValueError(f"model {args.model} from {args.model_list_config} not configured with driver.")
-        model_driver = model_config['driver']
+
+        model_driver = self.model_config['driver']
 
         model_dir = os.path.join(args.model_path, args.model)
         if not os.path.isdir(model_dir):
@@ -105,7 +106,7 @@ class GenerateTextHandler(RequestHandler):
         return '/generate/'
 
 
-def load_model_list_config(filename: str) -> Dict[str, Any]:
+def load_model_list_config(args, filename: str) -> Dict[str, Any]:
 
     with open(args.model_list_config, 'r') as fp:
         model_list_config = json.load(fp)
@@ -122,7 +123,8 @@ def load_model_list_config(filename: str) -> Dict[str, Any]:
     
         return result
 
-if __name__ == "__main__":
+
+def main():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
     # Parse command line arguments for model path
@@ -141,7 +143,7 @@ if __name__ == "__main__":
     if not os.path.isfile(args.model_list_config):
         raise FileNotFoundError(f"config path {args.model_list_config} does not exist")
 
-    model_list_config = load_model_list_config(args.model_list_config)
+    model_list_config = load_model_list_config(args, args.model_list_config)
     logging.info(f"using model configs: {json.dumps(model_list_config, indent=2)}")
 
     models_list = list(model_list_config.keys())
@@ -156,7 +158,7 @@ if __name__ == "__main__":
     ]
 
     for handler in handlers:
-        handler.initialize_handler()
+        handler.initialize_handler(args)
 
     app = FastAPI()
     app.add_middleware(
@@ -176,3 +178,6 @@ if __name__ == "__main__":
     # Start the FastAPI app
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+if __name__ == "__main__":
+    main()

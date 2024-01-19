@@ -2,7 +2,7 @@ import torch
 import logging
 import sys
 
-from drivers.common import TextGeneratorRequest, TextGeneratorDriver
+from singularity.models.llm.drivers.common import TextGeneratorRequest, TextGeneratorDriver
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig, PreTrainedTokenizer, PreTrainedModel, PretrainedConfig
 from torch.quantization import quantize_dynamic
 
