@@ -30,6 +30,9 @@ class BaseFFNConfig(PretrainedConfig):
     hidden_size: int
     output_size: int
 
+def newBaseFFNFromConfig(config: BaseFFNConfig):
+    return BaseFFN(config.input_size, config.hidden_size, config.output_size) 
+
 
 class PreTrainedBaseFFN(PreTrainedModel):
     config_class = BaseFFNConfig
@@ -37,7 +40,7 @@ class PreTrainedBaseFFN(PreTrainedModel):
 
     def __init__(self, config):
         super().__init__(config)
-        self.simple_ffn = BaseFFN(config.input_size, config.hidden_size, config.output_size)
+        self.simple_ffn = newBaseFFNFromConfig(config)
 
     def forward(self, input_ids, **kwargs):
         return self.simple_ffn(input_ids)
