@@ -1,0 +1,8 @@
+{
+    "auto_map": {
+        "AutoTokenizer": [
+            "rl337/template--modeling_template.TemplateTokenizer",
+            null
+        ]
+    }
+}
