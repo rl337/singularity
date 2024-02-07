@@ -4,7 +4,15 @@ Singularity is an open ended project that I'll use to learn about and produce ML
 
 ## structure
 
-The singularity project will be divided into "types" which represent different stages of development.  The first will be "Type-A" which will be written primarily in python and represent a prototyping step.  Type-B will take the core findings from Type-A and re-implement both the training and runtime in Rust.  Here, the goal will be to run in as small a footprint as possible; likely embedded systems.
+The singularity project will be divided into "types" which represent different stages of development.
+### Type-A: human crafted
+The first will be "Type-A" which will be written primarily in python and represent a prototyping step. The goal here is to quickly develop and prototype ideas around multiple small models workting together.  It will use third party libraries and integrate with services like huggingface.
+
+### Type-B: Hybrid standalone 
+Type-B will take the core findings from Type-A and re-implement both the training and runtime in Rust.  The code here will be completely standalone, not requiring any third party libraries.  Code here will be a mix of human and AI generated and will explore what the project structure necessary for AI generated code to be commited and evaluated.
+
+### Type-C: Generated Autonomously
+Type-C will be untouched by human hands and be completely created and maintained autonomously.  Likely it will take the overall structure of the Type-B codebase but be structured in a way that can be understood, updated, and maintained by an autonomous agent.
 
 ## Text Processing
 
