@@ -18,7 +18,7 @@ Type-C will be untouched by human hands and be completely created and maintained
 
 Docker Containers are used extensively in the project.  Using docker containers allows a separation of concerns between the running code and the environment that it is running on.  Distinct containers allow clean-room like control over the operating system, third party dependencies, and even access to the hardware made accessible at runtime.  
 
-Details about each of the docker containers used in the project can be found in the [`docker/`](docker/README.md) 
+Details about each of the docker containers used in the project can be found in the [`docker/`](docker/README.md) subdirectory
 
 
 
