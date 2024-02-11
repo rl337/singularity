@@ -1,6 +1,7 @@
 {
     "model_type": "template",
     "auto_map": {
-        "AutoConfig": "rl337/template--model_config.TemplateConfig"
+        "AutoConfig": "rl337/template--model_config.TemplateConfig",
+        "AutoModel": "rl337/template--model_impl.TemplateModel"
     }
 }
