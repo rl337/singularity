@@ -1,0 +1,8 @@
+{
+    "auto_map": {
+        "AutoTokenizer": [
+            "rl337/cicero-ffn--tokenizer_impl.AsciiTokenizer",
+            null
+        ]
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "model_type": "template",
+    "auto_map": {
+        "AutoConfig": "rl337/cicero-ffn--model_config.CiceroFFN",
+        "AutoModel": "rl337/cicero-ffn--model_impl.CiceroFFNModel"
+    }
+}
