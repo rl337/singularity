@@ -3,6 +3,8 @@ from tokenizers.models import BPE
 from tokenizers.pre_tokenizers import Whitespace
 from tokenizers.decoders import ByteLevel as ByteLevelDecoder
 from tokenizers.normalizers import NFD
+import transformers
+import typing
 
 VOCAB_FILES_NAMES = {
     "vocab_file": "vocab.json",
@@ -23,7 +25,7 @@ def new_tokenizer_model():
 
 class AsciiTokenizer(transformers.PreTrainedTokenizer):
     vocab_files_names = VOCAB_FILES_NAMES
-    tokenizer: tokenizers.Tokenizer
+    tokenizer: Tokenizer
 
     def __init__(self, **kwargs):
         tokenizer = Tokenizer(new_tokenizer_model())

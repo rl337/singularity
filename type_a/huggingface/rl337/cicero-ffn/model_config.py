@@ -19,5 +19,5 @@ class CiceroFFNConfig(PretrainedConfig):
         super().__init__(**kwargs)
         self.input_width = input_width
         self.hidden_width = hidden_width
-        self.hidden_width = hidden_depth
+        self.hidden_depth = hidden_depth
         self.output_width = output_width

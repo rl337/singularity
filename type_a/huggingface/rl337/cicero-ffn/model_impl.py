@@ -36,7 +36,12 @@ class CiceroFFNModel(PreTrainedModel):
 
     def __init__(self, config, **kwargs):
         super().__init__(config, **kwargs)
-        self.model = CiceroFFN()
+        self.model = CiceroFFN(
+            input_width=config.input_width,
+            hidden_width=config.hidden_width,
+            hidden_depth=config.hidden_depth,
+            output_width=config.output_width
+        )
 
     def forward(self, input_ids, **kwargs):
         return self.model(input_ids, **kwargs)
