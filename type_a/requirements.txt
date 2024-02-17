@@ -1,14 +1,9 @@
-argparse
-bz2file
-mwparserfromhell
 pytest
 tokenizers
 mock
 requests
 transformers
-sentencepiece
-ninja
-flash-attn
 torch
 torchvision
 torchaudio
+mwparserfromhell

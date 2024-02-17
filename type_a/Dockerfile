@@ -1,4 +1,4 @@
-FROM 0-singularity-base
+FROM 1-singularity-lite
 
 WORKDIR /singularity
 COPY . .
