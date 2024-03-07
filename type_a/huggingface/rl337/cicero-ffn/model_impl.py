@@ -18,9 +18,9 @@ class CiceroFFN(nn.Module):
 
         self.input_layer = nn.Linear(input_width, hidden_width)
 
-        self.layers = nn.ModuleList()
-        for _ in range(hidden_depth - 1):
-            self.layers.append(nn.Linear(hidden_width, hidden_width))
+        self.hidden_layers = nn.ModuleList()
+        for _ in range(hidden_depth):
+            self.hidden_layers.append(nn.Linear(hidden_width, hidden_width))
 
         self.output_layer = nn.Linear(hidden_width, output_width)
 
@@ -28,7 +28,8 @@ class CiceroFFN(nn.Module):
         this_pass = F.relu(self.input_layer(input))
         for layer in self.hidden_layers:
             this_pass = F.relu(layer(this_pass))
-        return self.output_layer(this_pass)
+        output = self.output_layer(this_pass)
+        return output[:, -1, :]
 
 class CiceroFFNModel(PreTrainedModel):
     config_class = CiceroFFNConfig

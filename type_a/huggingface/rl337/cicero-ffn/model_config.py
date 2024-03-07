@@ -11,10 +11,10 @@ class CiceroFFNConfig(PretrainedConfig):
     output_width: int
 
     def __init__(self, 
-                 input_width: int = 1,
+                 input_width: int = 256,
                  hidden_width: int = 1, 
                  hidden_depth: int = 1,
-                 output_width: int = 1, 
+                 output_width: int = 256, 
                  **kwargs):
         super().__init__(**kwargs)
         self.input_width = input_width

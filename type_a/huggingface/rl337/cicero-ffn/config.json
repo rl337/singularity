@@ -1,5 +1,5 @@
 {
-    "model_type": "template",
+    "model_type": "CiceroFFN",
     "auto_map": {
         "AutoConfig": "rl337/cicero-ffn--model_config.CiceroFFNConfig",
         "AutoModel": "rl337/cicero-ffn--model_impl.CiceroFFNModel"
