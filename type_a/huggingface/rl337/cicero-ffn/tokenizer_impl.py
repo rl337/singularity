@@ -3,6 +3,8 @@ from tokenizers.models import BPE
 from tokenizers.pre_tokenizers import Whitespace
 from tokenizers.decoders import ByteLevel as ByteLevelDecoder
 from tokenizers.normalizers import NFD
+
+import torch
 import transformers
 import typing
 import os
@@ -45,6 +47,26 @@ class AsciiTokenizer(transformers.PreTrainedTokenizer):
             os.makedirs(save_directory, exist_ok=True)
         # Save the tokenizer to the specified directory
         self.tokenizer.save(os.path.join(save_directory, "tokenizer.json"))
+
+    def tokenize(self, text, one_hot_encode=False, **kwargs):
+        # Call the parent class's tokenize method
+        tokenized_output = super().tokenize(text, **kwargs)
+
+        if one_hot_encode:
+            # Perform one-hot encoding
+            return self.to_one_hot(tokenized_output)
+        else:
+            return tokenized_output
+
+    def to_one_hot(self, indices):
+        # Assuming `indices` is a list of token IDs
+        # Implement one-hot encoding here, taking into account the tokenizer's vocabulary size
+        vocab_size = self.vocab_size
+        # Example one-hot encoding logic
+        one_hot_vectors = torch.zeros((len(indices), vocab_size), dtype=torch.float32)
+        for i, index in enumerate(indices):
+            one_hot_vectors[i, index] = 1.0
+        return one_hot_vectors
 
     @classmethod
     def from_pretrained(cls, pretrained_model_name_or_path, *init_inputs, **kwargs):
